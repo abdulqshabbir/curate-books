@@ -1,4 +1,5 @@
 const Apollo = require("apollo-server");
+const { v4: uuid } = require("uuid");
 
 const ApolloServer = Apollo.ApolloServer;
 const gql = Apollo.gql;
@@ -99,6 +100,15 @@ const typeDefs = gql`
     allBooks(author: String, genre: String): [Book]!
     allAuthors: [Author]!
   }
+  type Mutation {
+    addBook(
+      title: String!
+      author: String!
+      published: Int!
+      genres: [String]!
+    ): Book!
+    editAuthor(name: String!, setBornTo: Int!): Author!
+  }
 `;
 
 const resolvers = {
@@ -120,6 +130,42 @@ const resolvers = {
       return books;
     },
     allAuthors: () => authors,
+  },
+  Mutation: {
+    addBook: (parent, args) => {
+      let newBook = { ...args };
+      books.concat(newBook);
+
+      let authorExists =
+        authors.filter((a) => a.name === newBook.name).length > 0
+          ? true
+          : false;
+      if (authorExists) {
+        return newBook;
+      } else {
+        authors.concat({ name: newBook.name, id: uuid() });
+        return newBook;
+      }
+    },
+    editAuthor: (parent, args) => {
+      let editedAuthor = {};
+      let authorExists =
+        authors.filter((author) => author.name === args.name).length > 0
+          ? true
+          : false;
+
+      if (!authorExists) return null;
+
+      authors = authors.map((author) => {
+        if (author.name === args.name) {
+          editedAuthor = { ...author, name: args.name, born: args.setBornTo };
+          return editedAuthor;
+        } else {
+          return author;
+        }
+      });
+      return editedAuthor;
+    },
   },
   Author: {
     bookCount: (parent) => {
