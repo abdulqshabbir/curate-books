@@ -1,29 +1,55 @@
 import { useQuery, gql } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
+import { Authors } from "./components/Authors";
+import { Books } from "./components/Books";
+import { CreateBook } from "./components/CreateBook";
 import "./App.css";
 
 const ALL_BOOKS = gql`
   query {
     allBooks {
-      id
       title
       author
       published
-      genres
+    }
+  }
+`;
+
+const ALL_AUTHORS = gql`
+  query {
+    allAuthors {
+      name
+      born
+      bookCount
     }
   }
 `;
 
 function App() {
-  const books = useQuery(ALL_BOOKS);
+  const [page, setPage] = useState("create-book");
+  const authorsQuery = useQuery(ALL_AUTHORS);
+  const booksQuery = useQuery(ALL_BOOKS);
 
-  if (books.loading) {
-    return <div> loading... </div>;
+  if (page === "authors") {
+    return (
+      <div>
+        <Authors authorsQuery={authorsQuery} setPage={setPage} />)
+      </div>
+    );
+  } else if (page === "books") {
+    return (
+      <div>
+        <Books booksQuery={booksQuery} setPage={setPage} />
+      </div>
+    );
+  } else if (page === "create-book") {
+    return (
+      <div>
+        <CreateBook setPage={setPage} />
+      </div>
+    );
   }
-
-  if (books.data) {
-    return books.data.allBooks.map((b) => <li key={b.id}>{b.title}</li>);
-  }
+  return null;
 }
 
 export default App;
