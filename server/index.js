@@ -134,17 +134,21 @@ const resolvers = {
   },
   Mutation: {
     addBook: (parent, args) => {
-      let newBook = { ...args };
+      console.log(args);
+      let newBook = { ...args, id: uuid() };
       books.concat(newBook);
-
       let authorExists =
-        authors.filter((a) => a.name === newBook.name).length > 0
+        authors.filter((a) => a.name === newBook.author).length > 0
           ? true
           : false;
       if (authorExists) {
+        console.log("books", books);
+        console.log("authors", authors);
         return newBook;
       } else {
         authors.concat({ name: newBook.name, id: uuid() });
+        console.log("books", books);
+        console.log("authors", authors);
         return newBook;
       }
     },

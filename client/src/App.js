@@ -4,26 +4,7 @@ import { Authors } from "./components/Authors";
 import { Books } from "./components/Books";
 import { CreateBook } from "./components/CreateBook";
 import "./App.css";
-
-const ALL_BOOKS = gql`
-  query {
-    allBooks {
-      title
-      author
-      published
-    }
-  }
-`;
-
-const ALL_AUTHORS = gql`
-  query {
-    allAuthors {
-      name
-      born
-      bookCount
-    }
-  }
-`;
+import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 
 function App() {
   const [page, setPage] = useState("create-book");
