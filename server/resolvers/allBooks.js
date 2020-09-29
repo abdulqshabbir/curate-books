@@ -1,6 +1,7 @@
-const { books } = require("../data/books");
+const Book = require("../models/Book");
 
-exports.allBooks = (_, args) => {
+exports.allBooks = async (_, args) => {
+  const books = await Book.find();
   if (args.author && !args.genre) {
     return books.filter((b) => b.author === args.author);
   }
