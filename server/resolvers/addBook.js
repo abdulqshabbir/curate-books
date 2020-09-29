@@ -1,8 +1,4 @@
-// const { books } = require("../data/books");
 const Book = require("../models/Book");
-
-const { authors } = require("../data/authors");
-const { v4: uuid } = require("uuid");
 
 exports.addBook = async (parent, args) => {
   const newBook = new Book({ ...args });

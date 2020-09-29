@@ -9,6 +9,7 @@ const { v4: uuid } = require("uuid");
 // resolvers
 const { allBooks } = require("./resolvers/allBooks");
 const { addBook } = require("./resolvers/addBook");
+const { addAuthor } = require("./resolvers/addAuthor");
 const { editAuthor } = require("./resolvers/editAuthor");
 const { bookCount } = require("./resolvers/bookCount");
 const { authors } = require("./data/authors");
@@ -52,6 +53,7 @@ const typeDefs = gql`
       published: Int!
       genres: [String]!
     ): Book!
+    addAuthor(name: String!, born: Int): Author
     editedAuthor(name: String!, setBornTo: Int!): Author
   }
 `;
@@ -65,6 +67,7 @@ const resolvers = {
   },
   Mutation: {
     addBook: addBook,
+    addAuthor: addAuthor,
     editedAuthor: editAuthor,
   },
   Author: {
