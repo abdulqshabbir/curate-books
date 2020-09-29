@@ -3,10 +3,7 @@ const Apollo = require("apollo-server");
 const ApolloServer = Apollo.ApolloServer;
 const gql = Apollo.gql;
 
-// uuid
-const { v4: uuid } = require("uuid");
-
-// resolvers
+// my resolvers
 const { allBooks } = require("./resolvers/allBooks");
 const { addBook } = require("./resolvers/addBook");
 const { addAuthor } = require("./resolvers/addAuthor");
@@ -15,7 +12,11 @@ const { bookCount } = require("./resolvers/bookCount");
 const { authors } = require("./data/authors");
 const { books } = require("./data/books");
 
-// mongodb and mongoose
+// database models
+const Book = require("./models/Book");
+const Author = require("./models/Author");
+
+// database connection
 const mongoose = require("mongoose");
 const MONGO_URI =
   "mongodb+srv://test:test@cluster0.uoynh.gcp.mongodb.net/reading-list?retryWrites=true&w=majority";
@@ -60,10 +61,19 @@ const typeDefs = gql`
 
 const resolvers = {
   Query: {
-    bookCount: () => books.length,
-    authorCount: () => authors.length,
+    bookCount: async () => {
+      const books = await Book.find();
+      return books.length;
+    },
+    authorCount: async () => {
+      const authors = await Author.find();
+      return authors.length;
+    },
     allBooks: allBooks,
-    allAuthors: () => authors,
+    allAuthors: async () => {
+      const authors = await Author.find();
+      return authors;
+    },
   },
   Mutation: {
     addBook: addBook,
