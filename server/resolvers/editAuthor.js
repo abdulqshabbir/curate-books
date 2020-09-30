@@ -1,21 +1,17 @@
-const { authors } = require("../data/authors");
+const Author = require("../models/Author");
 
-exports.editAuthor = (parent, args) => {
-  let editedAuthor = {};
-  let authorExists =
-    authors.filter((author) => author.name === args.name).length > 0
-      ? true
-      : false;
+exports.editWhenAuthorIsBorn = async (_, args) => {
+  try {
+    const authorExists = Author.exists({ name: args.name });
+    if (!authorExists) return null;
 
-  if (!authorExists) return null;
+    const author = await Author.findOne({ name: args.name });
+    author.born = args.born;
 
-  authors = authors.map((author) => {
-    if (author.name === args.name) {
-      editedAuthor = { ...author, name: args.name, born: args.setBornTo };
-      return editedAuthor;
-    } else {
-      return author;
-    }
-  });
-  return editedAuthor;
+    await author.save();
+
+    return author.toObject();
+  } catch (e) {
+    console.log(e);
+  }
 };
