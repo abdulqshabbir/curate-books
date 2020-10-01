@@ -1,4 +1,4 @@
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { Authors } from "./components/Authors";
 import { Books } from "./components/Books";
