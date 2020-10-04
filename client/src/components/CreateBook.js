@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
 import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries";
-import { ErrorMessage } from "./ErrorMessage";
 
 export const CreateBook = ({ setPage }) => {
   const [title, setTitle] = useState("");
@@ -10,17 +9,7 @@ export const CreateBook = ({ setPage }) => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
 
-  const [error, setError] = useState(null);
-  const [showError, setShowError] = useState(false);
-
-  useEffect(() => {
-    setShowError(true);
-  }, [error]);
-
-  const [createBook] = useMutation(ADD_BOOK, {
-    onError: (error) => {
-      setError(error.graphQLErrors[0].message);
-    },
+  const [createBook, { data }] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
 
@@ -58,12 +47,14 @@ export const CreateBook = ({ setPage }) => {
           onChange={(e) => setGenre(e.target.value)}
         />
         <br />
+        <p>{genres.join(" ")}</p>
+        <br />
         <button onClick={(e) => addGenre(e)}>Add Genre</button>
         <br />
         <label>Genres: </label>
-        {showError ? <ErrorMessage errorMesage={error} /> : null}
         <br />
         <button>Create Book</button>
+        <ErrorMesage response={data} />
       </form>
     </div>
   );
@@ -74,6 +65,7 @@ export const CreateBook = ({ setPage }) => {
     createBook({
       variables: { title, author, published: parseInt(published), genres },
     });
+
     // clear input fields from state
     setTitle("");
     setAuthor("");
@@ -87,4 +79,17 @@ export const CreateBook = ({ setPage }) => {
     setGenres(genres.concat(genre));
     setGenre("");
   }
+};
+
+const ErrorMesage = ({ response: data }) => {
+  if (data === undefined) {
+    return null;
+  }
+  if (data.addBook.__typename === "CreateBookFailed") {
+    return <p>{data.addBook.message}</p>;
+  }
+  if (data.addBook.__typename === "Book") {
+    return <p>{`Book with name ${data.addBook.title} was just added!`}</p>;
+  }
+  return null;
 };

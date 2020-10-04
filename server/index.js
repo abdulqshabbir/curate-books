@@ -1,7 +1,7 @@
 // apollo imports
-const Apollo = require("apollo-server");
-const ApolloServer = Apollo.ApolloServer;
-const gql = Apollo.gql;
+const express = require("express");
+const { ApolloServer, gql } = require("apollo-server-express");
+const cors = require("cors");
 
 // my resolvers
 const { allBooks } = require("./resolvers/allBooks");
@@ -9,8 +9,6 @@ const { addBook } = require("./resolvers/addBook");
 const { addAuthor } = require("./resolvers/addAuthor");
 const { editWhenAuthorIsBorn } = require("./resolvers/editAuthor");
 const { bookCount } = require("./resolvers/bookCount");
-const { authors } = require("./data/authors");
-const { books } = require("./data/books");
 
 // database models
 const Book = require("./models/Book");
@@ -34,6 +32,9 @@ const typeDefs = gql`
     born: Int
     bookCount: Int!
   }
+
+  union BookResult = Book | CreateBookFailed
+
   type Book {
     title: String!
     author: String!
@@ -41,6 +42,12 @@ const typeDefs = gql`
     genres: [String!]!
     id: ID!
   }
+
+  type CreateBookFailed {
+    message: String!
+    field: String!
+  }
+
   type Query {
     bookCount: Int!
     authorCount: Int!
@@ -49,11 +56,11 @@ const typeDefs = gql`
   }
   type Mutation {
     addBook(
-      title: String!
-      author: String!
-      published: Int!
-      genres: [String]!
-    ): Book!
+      title: String
+      author: String
+      published: Int
+      genres: [String]
+    ): BookResult!
     addAuthor(name: String!, born: Int): Author
     editWhenAuthorIsBorn(name: String!, born: Int!): Author
   }
@@ -83,6 +90,12 @@ const resolvers = {
   Author: {
     bookCount: bookCount,
   },
+  BookResult: {
+    __resolveType: (obj) => {
+      if (obj.title) return "Book";
+      if (obj.message) return "CreateBookFailed";
+    },
+  },
 };
 
 const server = new ApolloServer({
@@ -90,6 +103,12 @@ const server = new ApolloServer({
   resolvers,
 });
 
-server.listen().then(({ url }) => {
-  console.log(`Server ready at ${url}`);
+const app = express();
+
+app.use(cors());
+
+server.applyMiddleware({ app });
+
+app.listen({ port: 4000 }, () => {
+  console.log(`Server ready at 4000`);
 });
