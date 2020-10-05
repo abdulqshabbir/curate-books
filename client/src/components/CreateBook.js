@@ -16,7 +16,8 @@ export const CreateBook = ({ setPage }) => {
 
   useEffect(() => {
     fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=search-terms&key=AIzaSyBotwXy3y1-6O3MFLS3gef5a21mfeWhhYI`
+      `https://www.googleapis.com/books/v1/volumes?q=harry\npotter&key=AIzaSyBotwXy3y1-6O3MFLS3gef5a21mfeWhhYI`,
+      { method: "GET" }
     )
       .then((res) => res.json())
       .then((result) => {
@@ -30,6 +31,7 @@ export const CreateBook = ({ setPage }) => {
       <button onClick={() => setPage("books")}>Show Books</button>
       <button onClick={() => setPage("authors")}>Show Authors</button>
       <button onClick={() => setPage("create-book")}>Create Book</button>
+      <button onClick={() => setPage("search-books")}>Search Books</button>
       <form onSubmit={(e) => submitForm(e)}>
         <label>Title: </label>
         <input

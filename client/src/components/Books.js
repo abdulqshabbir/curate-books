@@ -8,6 +8,7 @@ export const Books = ({ booksQuery, setPage }) => {
         <button onClick={() => setPage("books")}>Show Books</button>
         <button onClick={() => setPage("authors")}>Show Authors</button>
         <button onClick={() => setPage("create-book")}>Create Book</button>
+        <button onClick={() => setPage("search-books")}>Search Books</button>
         <h2>Books</h2>
         <table>
           <tbody>

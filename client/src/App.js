@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Authors } from "./components/Authors";
 import { Books } from "./components/Books";
 import { CreateBook } from "./components/CreateBook";
+import { SearchBooks } from "./components/SearchBooks";
 import "./App.css";
 import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 
@@ -27,6 +28,12 @@ function App() {
     return (
       <div>
         <CreateBook setPage={setPage} />
+      </div>
+    );
+  } else if (page === "search-books") {
+    return (
+      <div>
+        <SearchBooks setPage={setPage} />
       </div>
     );
   }
