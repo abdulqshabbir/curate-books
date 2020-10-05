@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries";
 
@@ -8,10 +8,22 @@ export const CreateBook = ({ setPage }) => {
   const [published, setPublished] = useState("");
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
+  const [books, setBooks] = useState([]);
 
   const [createBook, { data }] = useMutation(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
+
+  useEffect(() => {
+    fetch(
+      `https://www.googleapis.com/books/v1/volumes?q=search-terms&key=AIzaSyBotwXy3y1-6O3MFLS3gef5a21mfeWhhYI`
+    )
+      .then((res) => res.json())
+      .then((result) => {
+        console.log(result.items);
+        return setBooks(result);
+      });
+  }, []);
 
   return (
     <div>
