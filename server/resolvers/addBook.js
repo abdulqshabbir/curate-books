@@ -1,7 +1,21 @@
 const { ApolloError } = require("apollo-server-express");
 const Book = require("../models/Book");
 
-const isInvalidInput = (args) => {
+exports.addBook = async (_, args) => {
+  if (isInvalidInput(args)) {
+    return provideErrorMessage(args);
+  } else {
+    const newBook = new Book({ ...args });
+    try {
+      await newBook.save();
+    } catch (e) {
+      throw new ApolloError("Invalid arguments");
+    }
+    return newBook;
+  }
+};
+
+function isInvalidInput(args) {
   if (!args.title || !args.author || !args.published) {
     return true;
   }
@@ -9,16 +23,16 @@ const isInvalidInput = (args) => {
     return true;
   }
   return false;
-};
+}
 
-const provideErrorMessage = (args) => {
-  if (!args.title || typeof args.title !== "string") {
+function provideErrorMessage(args) {
+  if (!args.title) {
     return {
       message: "Please provide a title",
       field: "title",
     };
   }
-  if (!args.author || typeof args.author !== "string") {
+  if (!args.author) {
     return {
       message: "Please provide an author",
       field: "author",
@@ -36,18 +50,4 @@ const provideErrorMessage = (args) => {
       field: "genres",
     };
   }
-};
-
-exports.addBook = async (_, args) => {
-  if (isInvalidInput(args)) {
-    return provideErrorMessage(args);
-  } else {
-    const newBook = new Book({ ...args });
-    try {
-      await newBook.save();
-    } catch (e) {
-      throw new ApolloError("Invalid arguments");
-    }
-    return newBook;
-  }
-};
+}

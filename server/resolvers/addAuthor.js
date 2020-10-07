@@ -1,5 +1,5 @@
+const { ApolloError } = require("apollo-server-express");
 const Author = require("../models/Author");
-const { v4: uuid } = require("uuid");
 
 exports.addAuthor = async (parent, args) => {
   const newAuthor = new Author({ ...args });
@@ -7,6 +7,7 @@ exports.addAuthor = async (parent, args) => {
     await newAuthor.save();
   } catch (e) {
     console.log(e);
+    throw new ApolloError("Author could not be added.");
   }
   return newAuthor;
 };
