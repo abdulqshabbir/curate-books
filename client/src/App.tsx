@@ -7,30 +7,32 @@ import { SearchBooks } from "./components/SearchBooks";
 import "./App.css";
 import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 
+type PageRoute = "authors" | "books" | "create-book" | "search-books"
+
 function App() {
-  const [page, setPage] = useState("create-book");
+  const [page, setPage] = useState<PageRoute>('books');
   const authorsQuery = useQuery(ALL_AUTHORS);
   const booksQuery = useQuery(ALL_BOOKS);
 
-  if (page === "authors") {
+  if (page === 'authors') {
     return (
       <div>
         <Authors authorsQuery={authorsQuery} setPage={setPage} />)
       </div>
     );
-  } else if (page === "books") {
+  } else if (page === 'books') {
     return (
       <div>
         <Books booksQuery={booksQuery} setPage={setPage} />
       </div>
     );
-  } else if (page === "create-book") {
+  } else if (page === 'create-book') {
     return (
       <div>
         <CreateBook setPage={setPage} />
       </div>
     );
-  } else if (page === "search-books") {
+  } else if (page === 'search-books') {
     return (
       <div>
         <SearchBooks setPage={setPage} />

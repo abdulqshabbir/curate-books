@@ -60,8 +60,7 @@ export const SearchBooks = ({ setPage }) => {
         <button onClick={() => setGoogleQuery(query)}>Search for Books</button>
       </div>
     );
-
-  if (books) {
+  else {
     return (
       <div>
         <button onClick={() => setPage("books")}>Show Books</button>
