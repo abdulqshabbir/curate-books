@@ -1,8 +1,22 @@
+import { QueryResult } from "@apollo/client";
 import React from "react";
-export const Books = ({ booksQuery, setPage }) => {
-  if (booksQuery.loading) {
+import { BooksData } from "../types/BookData";
+import { PageRoute } from "../types/PageRoute";
+
+interface IProps {
+  booksQuery: QueryResult<BooksData, Record<string, any>>;
+  setPage: React.Dispatch<React.SetStateAction<PageRoute>>;
+}
+
+export const Books = ({ booksQuery, setPage }: IProps) => {
+  const {loading, error, data} = booksQuery
+  if (loading) {
     return <div>Loading...</div>;
-  } else {
+  } 
+  if (error || data === undefined ) {
+    return <div>Error fetching books...</div>
+  } 
+  else {
     return (
       <div>
         <button onClick={() => setPage("books")}>Show Books</button>
@@ -17,7 +31,7 @@ export const Books = ({ booksQuery, setPage }) => {
               <th>author</th>
               <th>published</th>
             </tr>
-            {booksQuery.data.allBooks.map((b) => (
+            {data.allBooks.map((b) => (
               <tr key={b.title}>
                 <td>{b.title}</td>
                 <td>{b.author}</td>

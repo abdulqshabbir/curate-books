@@ -1,18 +1,27 @@
 import { useQuery } from "@apollo/client";
 import React, { useState } from "react";
+
+//components
 import { Authors } from "./components/Authors";
 import { Books } from "./components/Books";
 import { CreateBook } from "./components/CreateBook";
 import { SearchBooks } from "./components/SearchBooks";
+
+//css
 import "./App.css";
+
+//queries
 import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 
-type PageRoute = "authors" | "books" | "create-book" | "search-books"
+//types
+import { AuthorsData} from './types/AuthorData'
+import { BooksData} from './types/BookData'
+import { PageRoute } from './types/PageRoute'
 
 function App() {
   const [page, setPage] = useState<PageRoute>('books');
-  const authorsQuery = useQuery(ALL_AUTHORS);
-  const booksQuery = useQuery(ALL_BOOKS);
+  const authorsQuery = useQuery<AuthorsData>(ALL_AUTHORS);
+  const booksQuery = useQuery<BooksData>(ALL_BOOKS);
 
   if (page === 'authors') {
     return (
