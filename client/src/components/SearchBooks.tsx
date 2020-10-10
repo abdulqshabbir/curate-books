@@ -1,23 +1,36 @@
 import React, { useEffect, useState } from "react";
+import { Book } from "../types/Book";
+import { PageRoute } from "../types/PageRoute";
 
-export const SearchBooks = ({ setPage }) => {
-  const [books, setBooks] = useState([]);
-  const [query, setQuery] = useState();
-  const [googleQuery, setGoogleQuery] = useState("");
+interface IProps {
+  setPage: React.Dispatch<React.SetStateAction<PageRoute>>
+}
+
+interface GoogleBook {
+  id: string;
+  volumeInfo: {
+    title: string,
+    authors: [string],
+    publishedDate: number,
+    categories: [string],
+  };
+}
+
+export const SearchBooks = ({ setPage }: IProps) => {
+  const [books, setBooks] = useState<Book[]>([]);
+  const [query, setQuery] = useState<string>('');
+  const [googleQuery, setGoogleQuery] = useState<string>('');
 
   useEffect(() => {
     if (googleQuery === "" || googleQuery === undefined) {
       return;
     }
-    fetch(
-      `https://www.googleapis.com/books/v1/volumes?q=${googleQuery}&key=AIzaSyBotwXy3y1-6O3MFLS3gef5a21mfeWhhYI`,
-      { method: "GET" }
-    )
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${googleQuery}&key=AIzaSyBotwXy3y1-6O3MFLS3gef5a21mfeWhhYI`)
       .then((res) => res.json())
       .then((res) => {
         let books = res.items;
 
-        const filteredBooks = books.filter((book) => {
+        const filteredBooks = books.filter((book: GoogleBook) => {
           if (
             !book.volumeInfo.title ||
             !book.volumeInfo.authors ||
@@ -30,23 +43,21 @@ export const SearchBooks = ({ setPage }) => {
             return true;
           }
         });
-
-        const formattedBooks = filteredBooks.map((book) => ({
-          title: book.volumeInfo.title ? book.volumeInfo.title : null,
-          author: book.volumeInfo.authors ? book.volumeInfo.authors[0] : null,
-          published: book.volumeInfo.publishedDate
-            ? book.volumeInfo.publishedDate
-            : null,
+        return filteredBooks
+      })
+      .then(filteredBooks => {
+        const formattedBooks = filteredBooks.map((book: GoogleBook) => ({
+          title: book.volumeInfo.title,
+          author: book.volumeInfo.authors,
+          published: book.volumeInfo.publishedDate,
           genres: book.volumeInfo.categories,
           id: book.id,
         }));
-        console.log(formattedBooks);
-        return setBooks(formattedBooks);
+        setBooks(formattedBooks);
       })
       .catch((e) => {
-        console.log(e);
         setBooks([]);
-        return "Something went wrong with your api query";
+        throw new Error("Something went wrong when fetching google books")
       });
   }, [googleQuery]);
   if (!books)
