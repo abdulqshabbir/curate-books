@@ -14,14 +14,14 @@ import "./App.css";
 import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 
 //types
-import { AuthorsData} from './types/AuthorData'
-import { BooksData} from './types/BookData'
+import { ALL_AUTHORS_DATA} from './queries/ALL_AUTHORS'
+import { ALL_BOOKS_DATA } from './queries/ALL_BOOKS'
 import { PageRoute } from './types/PageRoute'
 
 function App() {
   const [page, setPage] = useState<PageRoute>('books');
-  const authorsQuery = useQuery<AuthorsData>(ALL_AUTHORS);
-  const booksQuery = useQuery<BooksData>(ALL_BOOKS);
+  const authorsQuery = useQuery<ALL_AUTHORS_DATA>(ALL_AUTHORS);
+  const booksQuery = useQuery<ALL_BOOKS_DATA>(ALL_BOOKS);
 
   if (page === 'authors') {
     return (

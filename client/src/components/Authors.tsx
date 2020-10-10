@@ -1,20 +1,15 @@
 import { QueryResult } from "@apollo/client";
 import React from "react";
-import { ALL_BOOKS_DATA } from "../queries/ALL_BOOKS";
+import { ALL_AUTHORS_DATA } from "../queries/ALL_AUTHORS";
 import { PageRoute } from "../types/PageRoute";
 
-interface IProps {
-  booksQuery: QueryResult<ALL_BOOKS_DATA, Record<string, any>>;
-  setPage: React.Dispatch<React.SetStateAction<PageRoute>>;
-}
-
-export const Books = ({ booksQuery, setPage }: IProps) => {
-  const {loading, error, data} = booksQuery
+export const Authors = ({ authorsQuery, setPage }: IProps) => {
+  let { loading, error, data } = authorsQuery
   if (loading) {
     return <div>Loading...</div>;
-  } 
-  if (error || data === undefined ) {
-    return <div>Error fetching books...</div>
+  }
+  else if (error || data === undefined) {
+    return <div>Error fetching authors...</div>
   } 
   else {
     return (
@@ -23,19 +18,19 @@ export const Books = ({ booksQuery, setPage }: IProps) => {
         <button onClick={() => setPage("authors")}>Show Authors</button>
         <button onClick={() => setPage("create-book")}>Create Book</button>
         <button onClick={() => setPage("search-books")}>Search Books</button>
-        <h2>Books</h2>
+        <h2>Authors</h2>
         <table>
           <tbody>
             <tr>
               <th></th>
-              <th>author</th>
-              <th>published</th>
+              <th>born</th>
+              <th>books</th>
             </tr>
-            {data.allBooks.map((b) => (
-              <tr key={b.title}>
-                <td>{b.title}</td>
-                <td>{b.author}</td>
-                <td>{b.published}</td>
+            {data.allAuthors.map((a) => (
+              <tr key={a.name}>
+                <td>{a.name}</td>
+                <td>{a.born}</td>
+                <td>{a.bookCount}</td>
               </tr>
             ))}
           </tbody>
@@ -44,3 +39,7 @@ export const Books = ({ booksQuery, setPage }: IProps) => {
     );
   }
 };
+interface IProps {
+  authorsQuery: QueryResult<ALL_AUTHORS_DATA, Record<string, any>>;
+  setPage: React.Dispatch<React.SetStateAction<PageRoute>>;
+}
