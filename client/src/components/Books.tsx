@@ -3,11 +3,6 @@ import React from "react";
 import { ALL_BOOKS_DATA } from "../queries/ALL_BOOKS";
 import { PageRoute } from "../types/PageRoute";
 
-interface IProps {
-  booksQuery: QueryResult<ALL_BOOKS_DATA, Record<string, any>>;
-  setPage: React.Dispatch<React.SetStateAction<PageRoute>>;
-}
-
 export const Books = ({ booksQuery, setPage }: IProps) => {
   const {loading, error, data} = booksQuery
   if (loading) {
@@ -44,3 +39,8 @@ export const Books = ({ booksQuery, setPage }: IProps) => {
     );
   }
 };
+
+interface IProps {
+  booksQuery: QueryResult<ALL_BOOKS_DATA, Record<string, any>>;
+  setPage: React.Dispatch<React.SetStateAction<PageRoute>>;
+}
