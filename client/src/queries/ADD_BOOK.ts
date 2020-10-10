@@ -1,4 +1,5 @@
 import { gql } from '@apollo/client'
+import { Book } from '../types/Book';
 
 export const ADD_BOOK = gql`
   mutation addBook(
@@ -19,6 +20,7 @@ export const ADD_BOOK = gql`
         author
         published
         genres
+        id
       }
       ... on CreateBookFailed {
         message
@@ -27,3 +29,27 @@ export const ADD_BOOK = gql`
     }
   }
 `;
+
+interface ADD_BOOK_FAILURE {
+  __typename: 'CreateBookFailed',
+  message: string,
+  field: string
+}
+
+interface ADD_BOOK_SUCCESS {
+  __typename: 'Book',
+  title: string,
+  author: string,
+  published: number,
+  genres: [string],
+  id: string,
+}
+
+export type ADD_BOOK_DATA = ADD_BOOK_SUCCESS | ADD_BOOK_FAILURE
+
+export interface ADD_BOOK_VARS {
+  title: string,
+  author: string,
+  published: number,
+  genres: string[]
+}

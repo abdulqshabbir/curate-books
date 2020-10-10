@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import React, { useEffect, useState } from "react";
 import { Book } from "../types/Book";
 import { PageRoute } from "../types/PageRoute";
@@ -21,6 +22,17 @@ export const SearchBooks = ({ setPage }: IProps) => {
   const [query, setQuery] = useState<string>('');
   const [googleQuery, setGoogleQuery] = useState<string>('');
 
+  function bookHasRequiredFields(book: GoogleBook) {
+    if (
+        !book.volumeInfo.title ||
+        !book.volumeInfo.authors ||
+        !book.volumeInfo.publishedDate ||
+        !book.volumeInfo.categories ||
+        !book.id
+    ) {return false}
+    return true
+  }
+
   useEffect(() => {
     if (googleQuery === "" || googleQuery === undefined) {
       return;
@@ -29,20 +41,7 @@ export const SearchBooks = ({ setPage }: IProps) => {
       .then((res) => res.json())
       .then((res) => {
         let books = res.items;
-
-        const filteredBooks = books.filter((book: GoogleBook) => {
-          if (
-            !book.volumeInfo.title ||
-            !book.volumeInfo.authors ||
-            !book.volumeInfo.publishedDate ||
-            !book.volumeInfo.categories ||
-            !book.id
-          ) {
-            return false;
-          } else {
-            return true;
-          }
-        });
+        const filteredBooks = books.filter((book: GoogleBook) => bookHasRequiredFields(book));
         return filteredBooks
       })
       .then(filteredBooks => {
