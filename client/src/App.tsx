@@ -7,7 +7,10 @@ import { Books } from "./components/Books";
 import { CreateBook } from "./components/CreateBook";
 import { SearchBooks } from "./components/SearchBooks";
 
-//css
+// semantic ui css theme
+import 'semantic-ui-css/semantic.min.css'
+
+// my custom css file
 import "./App.css";
 
 //queries
