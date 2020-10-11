@@ -8,9 +8,8 @@ interface IProps {
 
 export const NavigationBar = ({setPage}: IProps) => {
     const [activeMenuItem, setActiveMenuItem] = useState<PageRoute>('books')
-    console.log('active menu item', activeMenuItem)
     return (
-       <Segment inverted>
+       <Segment inverted style={{borderRadius: 0}}>
            <Menu inverted pointing secondary>
                 <Menu.Item
                     name={'books'}

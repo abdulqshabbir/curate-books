@@ -1,7 +1,9 @@
 // eslint-disable-next-line
+import { format } from "path";
 import React, { useEffect, useState } from "react";
 import { Book } from "../types/Book";
 import { PageRoute } from "../types/PageRoute";
+import { BookCard } from "./BookCard";
 import { NavigationBar } from "./NavigationBar";
 
 interface IProps {
@@ -15,11 +17,16 @@ interface GoogleBook {
     authors: [string],
     publishedDate: number,
     categories: [string],
+    description : string,
+    imageLinks: {
+      thumbnail: string
+    }
   };
 }
 
 export const SearchBooks = ({ setPage }: IProps) => {
   const [books, setBooks] = useState<Book[]>([]);
+  console.log(books)
   const [query, setQuery] = useState<string>('');
   const [googleQuery, setGoogleQuery] = useState<string>('');
 
@@ -29,6 +36,8 @@ export const SearchBooks = ({ setPage }: IProps) => {
         !book.volumeInfo.authors ||
         !book.volumeInfo.publishedDate ||
         !book.volumeInfo.categories ||
+        !book.volumeInfo.description ||
+        !book.volumeInfo.imageLinks.thumbnail ||
         !book.id
     ) {return false}
     return true
@@ -46,14 +55,17 @@ export const SearchBooks = ({ setPage }: IProps) => {
         return filteredBooks
       })
       .then(filteredBooks => {
-        const formattedBooks = filteredBooks.map((book: GoogleBook) => ({
+        const formattedBooks: Book[] = filteredBooks.map((book: GoogleBook) => ({
           title: book.volumeInfo.title,
           author: book.volumeInfo.authors,
           published: book.volumeInfo.publishedDate,
           genres: book.volumeInfo.categories,
+          description:book.volumeInfo.description,
+          image: book.volumeInfo.imageLinks.thumbnail,
           id: book.id,
         }));
         setBooks(formattedBooks);
+        console.log(books)
       })
       .catch((e) => {
         setBooks([]);
@@ -76,7 +88,7 @@ export const SearchBooks = ({ setPage }: IProps) => {
         <button onClick={() => setGoogleQuery(query)}>Search for Books</button>
         <ul>
           {books.map((b) => (
-            <li key={b.id}>{b.title}</li>
+            <BookCard book={b} key={b.id}/>
           ))}
         </ul>
       </div>
