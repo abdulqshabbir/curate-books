@@ -12,6 +12,13 @@
   animation: toast-in-right 0.7s;
 }
 
+.top-right-undo {
+  top: 12px;
+  right: 12px;
+  transition: transform 0.6s ease-in-out;
+  animation: undo-toast-in-right 0.7s;
+}
+
 .bottom-right {
   bottom: 12px;
   right: 12px;
@@ -41,7 +48,7 @@
   margin: 0 0 6px;
   padding: 30px;
   margin-bottom: 15px;
-  width: 300px;
+  width: 500px;
   max-height: 100px;
   border-radius: 3px 3px 3px 3px;
   box-shadow: 0 0 10px #999;
@@ -54,7 +61,6 @@
 .notification:hover {
   box-shadow: 0 0 12px #fff;
   opacity: 1;
-  cursor: pointer;
 }
 
 .notification-title {
@@ -119,6 +125,15 @@
   }
   to {
     transform: translateX(0);
+  }
+}
+
+@keyframes undo-toast-in-right {
+  from {
+    transform: translate(0);
+  }
+  to {
+    transform: translate(100%);
   }
 }
 

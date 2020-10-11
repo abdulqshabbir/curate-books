@@ -1,27 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './ToastNotification.css'
 
-interface Notification {
-    id: number,
-    type: string,
+export interface Notification {
     title: string,
     description: string
 }
 
 interface IProps {
     notification: Notification,
-    position: string
+    position: string,
+    color: string
 }
 
-export const ToastNotification = ({notification, position}: IProps) => {
-    return <div className={`notification-container ${position}`}>
-        <div className="notification toast">
-            <button>x</button>
-            <div className="notification-image"></div>
-            <div>
-                <p className="notification-title">title</p>
-                <p className="notification-message">mesage</p>
+type  TSetNotification  = React.Dispatch<React.SetStateAction<Notification | null>>
+
+export const ToastNotification = ({notification: not, position, color}: IProps) => {
+
+    const [notification, setNotification] = useState<Notification | null>(not)
+    
+    const closeNotification = (setNotification: TSetNotification) =>  {
+        setNotification(null)
+    }
+
+    if (notification === null) {
+        return null
+    }
+    return (
+        <div className={`notification-container ${position}`} >
+            <div className={`notification toast ${position }`} style={{backgroundColor: color }} >
+                <button onClick={() =>  closeNotification(setNotification)}>x</button>
+                <div>
+                    <p className="notification-title">{notification.title}</p>
+                    <p className="notification-message">{notification.description}</p>
+                </div>
             </div>
         </div>
-    </div>
+    )
 }

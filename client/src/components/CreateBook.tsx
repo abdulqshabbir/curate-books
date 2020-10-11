@@ -4,6 +4,7 @@ import { useMutation } from "@apollo/client";
 import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries";
 import { PageRoute } from "../types/PageRoute";
 import { ADD_BOOK_DATA, ADD_BOOK_VARS } from "../queries/ADD_BOOK";
+import { ToastNotification, Notification } from "./ToastNotification";
 
 interface IProps {
   setPage: React.Dispatch<React.SetStateAction<PageRoute>>
@@ -16,12 +17,13 @@ export const CreateBook = ({ setPage }: IProps) => {
   const [published, setPublished] = useState<string>("");
   const [genre, setGenre] = useState<string>("");
   const [genres, setGenres] = useState<string[]>([]);
-
+      
   // notification state
   const [showNotification, setShowNotification] = useState<boolean>(false)
+  const [notification, setNotification] = useState<Notification>()
 
   // graphql requests
-  const [createBook, { data, error, loading }] = useMutation<ADD_BOOK_DATA, ADD_BOOK_VARS>(ADD_BOOK, {
+  const [createBook, { error, loading }] = useMutation<ADD_BOOK_DATA, ADD_BOOK_VARS>(ADD_BOOK, {
     refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
 
@@ -53,7 +55,7 @@ export const CreateBook = ({ setPage }: IProps) => {
       <button onClick={() => setPage("authors")}>Show Authors</button>
       <button onClick={() => setPage("create-book")}>Create Book</button>
       <button onClick={() => setPage("search-books")}>Search Books</button>
-      <form onSubmit={(e) => submitForm(e, setShowNotification)}>
+      <form onSubmit={(e) => submitForm(e, title, setShowNotification, setNotification)}>
         <label>Title: </label>
         <input
           type="text"
@@ -89,17 +91,31 @@ export const CreateBook = ({ setPage }: IProps) => {
         <label>Genres: </label>
         <br />
         <button>Create Book</button>
-        {showNotification && data && <Notification data={data} />}
+        {showNotification && notification && <ToastNotification notification={notification} color='blue' position='top-right'/>}
       </form>
     </div>
   );
 
-  function submitForm(e: React.FormEvent<HTMLFormElement>, setShowNotification: React.Dispatch<React.SetStateAction<boolean>>) {
+  function submitForm(
+      e: React.FormEvent<HTMLFormElement>,
+      title: string,
+      setShowNotification: React.Dispatch<React.SetStateAction<boolean>>,
+      setNotification: React.Dispatch<React.SetStateAction<Notification | undefined>>
+    ) {
     e.preventDefault();
     // make graphql request to ADD_BOOK and refetch authors and books
     createBook({
       variables: { title, author, published: parseInt(published), genres },
     });
+
+    // set notifcation data
+    setNotification({
+      title: 'Success',
+      description: `${title} was successfully added to database.`
+    })
+
+    // show notification 
+    setShowNotification(true)
 
     // clear input fields from state
     setTitle("");
@@ -107,10 +123,6 @@ export const CreateBook = ({ setPage }: IProps) => {
     setPublished("");
     setGenres([]);
     setGenre("");
-
-    // show notification for 2 seconds
-    setShowNotification(true)
-    setTimeout(() => setShowNotification(false), 2000)
   }
 
   function addGenre(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
@@ -118,18 +130,4 @@ export const CreateBook = ({ setPage }: IProps) => {
     setGenres(genres.concat(genre));
     setGenre("");
   }
-};
-
-interface IPropsNotification {
-  data: ADD_BOOK_DATA
-}
-
-const Notification = ({data}: IPropsNotification) => {
-  if (data.__typename === 'CreateBookFailed'){
-    return <p>{data.message}</p>;
-  }
-  if (data.__typename === "Book") {
-    return <p>{`Book with name ${data.title} was just added!`}</p>;
-  }
-  return null;
 };
