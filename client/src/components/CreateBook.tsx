@@ -5,6 +5,7 @@ import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries";
 import { PageRoute } from "../types/PageRoute";
 import { ADD_BOOK_DATA, ADD_BOOK_VARS } from "../queries/ADD_BOOK";
 import { ToastNotification, Notification } from "./ToastNotification";
+import { NavigationBar } from './NavigationBar'
 
 interface IProps {
   setPage: React.Dispatch<React.SetStateAction<PageRoute>>
@@ -30,10 +31,7 @@ export const CreateBook = ({ setPage }: IProps) => {
   if (error) {
     return (
       <div>
-        <button onClick={() => setPage('books')}>Show Books</button>
-        <button onClick={() => setPage("authors")}>Show Authors</button>
-        <button onClick={() => setPage("create-book")}>Create Book</button>
-        <button onClick={() => setPage("search-books")}>Search Books</button>
+        <NavigationBar setPage={setPage} />
         <p>There was an error creating the book...</p>
       </div>
     )
@@ -41,20 +39,14 @@ export const CreateBook = ({ setPage }: IProps) => {
   if (loading) {
     return (
       <div>
-        <button onClick={() => setPage('books')}>Show Books</button>
-        <button onClick={() => setPage("authors")}>Show Authors</button>
-        <button onClick={() => setPage("create-book")}>Create Book</button>
-        <button onClick={() => setPage("search-books")}>Search Books</button>
+        <NavigationBar setPage={setPage} />
         <p>Loading your new book...</p>
       </div>
     )
   }
   return (
     <div>
-      <button onClick={() => setPage('books')}>Show Books</button>
-      <button onClick={() => setPage("authors")}>Show Authors</button>
-      <button onClick={() => setPage("create-book")}>Create Book</button>
-      <button onClick={() => setPage("search-books")}>Search Books</button>
+      <NavigationBar setPage={setPage} />
       <form onSubmit={(e) => submitForm(e, title, setShowNotification, setNotification)}>
         <label>Title: </label>
         <input

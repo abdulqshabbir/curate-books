@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Book } from "../types/Book";
 import { PageRoute } from "../types/PageRoute";
+import { NavigationBar } from "./NavigationBar";
 
 interface IProps {
   setPage: React.Dispatch<React.SetStateAction<PageRoute>>
@@ -62,10 +63,7 @@ export const SearchBooks = ({ setPage }: IProps) => {
   if (!books)
     return (
       <div>
-        <button onClick={() => setPage("books")}>Show Books</button>
-        <button onClick={() => setPage("authors")}>Show Authors</button>
-        <button onClick={() => setPage("create-book")}>Create Book</button>
-        <button onClick={() => setPage("search-books")}>Search Books</button>
+        <NavigationBar setPage={setPage}/>
         <input type="text" onChange={(e) => setQuery(e.target.value)}></input>
         <button onClick={() => setGoogleQuery(query)}>Search for Books</button>
       </div>
@@ -73,10 +71,7 @@ export const SearchBooks = ({ setPage }: IProps) => {
   else {
     return (
       <div>
-        <button onClick={() => setPage("books")}>Show Books</button>
-        <button onClick={() => setPage("authors")}>Show Authors</button>
-        <button onClick={() => setPage("create-book")}>Create Book</button>
-        <button onClick={() => setPage("search-books")}>Search Books</button>
+        <NavigationBar setPage={setPage}/>
         <input type="text" onChange={(e) => setQuery(e.target.value)}></input>
         <button onClick={() => setGoogleQuery(query)}>Search for Books</button>
         <ul>

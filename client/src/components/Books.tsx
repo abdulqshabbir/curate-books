@@ -2,6 +2,7 @@ import { QueryResult } from "@apollo/client";
 import React from "react";
 import { ALL_BOOKS_DATA } from "../queries/ALL_BOOKS";
 import { PageRoute } from "../types/PageRoute";
+import { NavigationBar } from "./NavigationBar";
 
 interface IProps {
   booksQuery: QueryResult<ALL_BOOKS_DATA, Record<string, any>>;
@@ -19,10 +20,7 @@ export const Books = ({ booksQuery, setPage }: IProps) => {
   else {
     return (
       <div>
-        <button onClick={() => setPage("books")}>Show Books</button>
-        <button onClick={() => setPage("authors")}>Show Authors</button>
-        <button onClick={() => setPage("create-book")}>Create Book</button>
-        <button onClick={() => setPage("search-books")}>Search Books</button>
+        <NavigationBar setPage={setPage} />
         <h2>Books</h2>
         <table>
           <tbody>
