@@ -1,5 +1,4 @@
 import { gql } from '@apollo/client'
-import { Book } from '../types/Book';
 
 export const ADD_BOOK = gql`
   mutation addBook(

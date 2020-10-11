@@ -101,15 +101,16 @@ export const CreateBook = ({ setPage }: IProps) => {
       variables: { title, author, published: parseInt(published), genres },
     });
 
-    setShowNotification(true)
-    setTimeout(() => setShowNotification(false), 2000)
-
     // clear input fields from state
     setTitle("");
     setAuthor("");
     setPublished("");
     setGenres([]);
     setGenre("");
+
+    // show notification for 2 seconds
+    setShowNotification(true)
+    setTimeout(() => setShowNotification(false), 2000)
   }
 
   function addGenre(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
