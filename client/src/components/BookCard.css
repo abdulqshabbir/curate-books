@@ -1,7 +1,16 @@
-.book-container {
-  display: flex;
-  flex-direction: row;
-  width: 60px;
-  padding: 50px;
+.ui.card.book-container {
+  width: 30ch;
   box-sizing: border-box;
+  padding: 10px;
+  margin: 10px;
+  height: 380px;
+  overflow: hidden;
+}
+
+.ui.card:first-child.book-container {
+  margin-top: 10px;
+}
+
+img {
+  object-fit: contain;
 }

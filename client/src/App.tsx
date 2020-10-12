@@ -22,7 +22,7 @@ import { ALL_BOOKS_DATA } from './queries/ALL_BOOKS'
 import { PageRoute } from './types/PageRoute'
 
 function App() {
-  const [page, setPage] = useState<PageRoute>('books');
+  const [page, setPage] = useState<PageRoute>('search-books');
   const authorsQuery = useQuery<ALL_AUTHORS_DATA>(ALL_AUTHORS);
   const booksQuery = useQuery<ALL_BOOKS_DATA>(ALL_BOOKS);
 
