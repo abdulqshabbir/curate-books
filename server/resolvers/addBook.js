@@ -16,10 +16,17 @@ exports.addBook = async (_, args) => {
 };
 
 function isInvalidInput(args) {
-  if (!args.title || !args.author || !args.published) {
+  if (
+    !args.title ||
+    !args.author ||
+    !args.published ||
+    !args.description ||
+    !args.image ||
+    !args.googleBookId
+  ) {
     return true;
   }
-  if (args.genres.length === 0) {
+  if (!args.genres || args.genres.length === 0) {
     return true;
   }
   return false;
@@ -48,6 +55,25 @@ function provideErrorMessage(args) {
     return {
       message: "Please provide a genre",
       field: "genres",
+    };
+  }
+  if (!args.description) {
+    return {
+      message: "Please provide a description",
+      field: "description",
+    };
+  }
+  if (!args.image) {
+    return {
+      message: "Please provide an image",
+      field: "image",
+    };
+  }
+
+  if (!args.googleBookId) {
+    return {
+      message: "No google book id provided.",
+      field: "googleBookId",
     };
   }
 }

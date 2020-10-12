@@ -4,14 +4,20 @@ export const ADD_BOOK = gql`
   mutation addBook(
     $title: String
     $author: String
-    $published: Int
+    $published: String
     $genres: [String]
+    $description: String,
+    $image: String,
+    $googleBookId: String,
   ) {
     addBook(
       title: $title
       author: $author
       published: $published
       genres: $genres
+      description: $description
+      image: $image
+      googleBookId: $googleBookId
     ) {
       __typename
       ... on Book {
@@ -19,6 +25,9 @@ export const ADD_BOOK = gql`
         author
         published
         genres
+        description
+        image
+        googleBookId
         id
       }
       ... on CreateBookFailed {
@@ -39,8 +48,11 @@ interface ADD_BOOK_SUCCESS {
   __typename: 'Book',
   title: string,
   author: string,
-  published: number,
+  published: string,
   genres: [string],
+  description: string,
+  image: string,
+  googleBookId: string,
   id: string,
 }
 
@@ -49,6 +61,9 @@ export type ADD_BOOK_DATA = ADD_BOOK_SUCCESS | ADD_BOOK_FAILURE
 export interface ADD_BOOK_VARS {
   title: string,
   author: string,
-  published: number,
-  genres: string[]
+  published: string,
+  genres: string[],
+  description: string,
+  image: string,
+  googleBookId: string
 }

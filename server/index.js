@@ -38,8 +38,11 @@ const typeDefs = gql`
   type Book {
     title: String!
     author: String!
-    published: Int!
-    genres: [String!]!
+    published: String!
+    genres: [String]!
+    description: String!
+    image: String!
+    googleBookId: String
     id: ID!
   }
 
@@ -58,8 +61,11 @@ const typeDefs = gql`
     addBook(
       title: String
       author: String
-      published: Int
+      published: String
       genres: [String]
+      description: String
+      image: String
+      googleBookId: String
     ): BookResult!
     addAuthor(name: String!, born: Int): Author
     editWhenAuthorIsBorn(name: String!, born: Int!): Author

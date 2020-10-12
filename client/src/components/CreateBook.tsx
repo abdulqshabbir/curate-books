@@ -24,8 +24,9 @@ export const CreateBook = ({ setPage }: IProps) => {
   const [notification, setNotification] = useState<Notification>()
 
   // graphql requests
-  const [createBook, { error, loading }] = useMutation<ADD_BOOK_DATA, ADD_BOOK_VARS>(ADD_BOOK, {
-    refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
+  const [createBook, { error, loading }] = 
+    useMutation<ADD_BOOK_DATA, ADD_BOOK_VARS>
+    (ADD_BOOK, {refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
 
   if (error) {
@@ -96,9 +97,9 @@ export const CreateBook = ({ setPage }: IProps) => {
     ) {
     e.preventDefault();
     // make graphql request to ADD_BOOK and refetch authors and books
-    createBook({
-      variables: { title, author, published: parseInt(published), genres },
-    });
+    // createBook({
+    //   variables: { title, author, published: published, genres },
+    // });
 
     // set notification
     setNotification({

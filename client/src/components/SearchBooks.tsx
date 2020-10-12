@@ -22,7 +22,7 @@ interface GoogleBook {
   volumeInfo: {
     title: string,
     authors: string[],
-    publishedDate: number,
+    publishedDate: string,
     categories: [string],
     description : string,
     imageLinks: {
@@ -58,33 +58,19 @@ export const SearchBooks = ({ setPage }: IProps) => {
   } else if (render === 'loading') {
     BooksOrLoadingSpinner = <Loader active />
   } else {
+    console.log('books', books)
     BooksOrLoadingSpinner = books.map(b => <BookCard book={b} key={b.id} />)
   }
   return (
     <div>
       <NavigationBar setPage={setPage}/>
       <div className="search-field-container">
-        {/* <div className="ui input">
-          <input
-            className="search-books-input"
-            type="text"
-            placeholder="Search for book by author, title, etc."
-            onChange={e => setQuery(e.target.value)}
-            onKeyDown={e => {
-              if (e.key === 'Enter') {
-                setQuery(query)
-              }
-            }}
-          >
-          </input>
-        </div> */}
         <Input
           type="text"
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for book by author, title, etc."
           size="large"
           className="search-books-input"
-          onKey
         ></Input>
         <Button
           className="search-books-button"

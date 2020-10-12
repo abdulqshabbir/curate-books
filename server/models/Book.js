@@ -10,7 +10,7 @@ const schema = new mongoose.Schema({
     required: true,
   },
   published: {
-    type: Number,
+    type: String,
     required: true,
   },
   genres: [
@@ -19,6 +19,17 @@ const schema = new mongoose.Schema({
       required: true,
     },
   ],
+  description: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+  googleBookId: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Book", schema);
