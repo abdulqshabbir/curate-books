@@ -1,7 +1,7 @@
 // eslint-disable-next-line
 import React, { useEffect, useState } from "react";
 import { useMutation } from "@apollo/client";
-import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries";
+import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries/index"
 import { PageRoute } from "../types/PageRoute";
 import { ADD_BOOK_DATA, ADD_BOOK_VARS } from "../queries/ADD_BOOK";
 import { ToastNotification, Notification } from "./ToastNotification";
@@ -83,7 +83,7 @@ export const CreateBook = ({ setPage }: IProps) => {
         <label>Genres: </label>
         <br />
         <button>Create Book</button>
-        {showNotification && notification && <ToastNotification notification={notification} color='blue' position='top-right'/>}
+        {showNotification && notification && <ToastNotification notification={notification} color='#2c698d' position='top-right'/>}
       </form>
     </div>
   );
@@ -100,10 +100,11 @@ export const CreateBook = ({ setPage }: IProps) => {
       variables: { title, author, published: parseInt(published), genres },
     });
 
-    // set notifcation data
+    // set notification
     setNotification({
       title: 'Success',
-      description: `${title} was successfully added to database.`
+      description: `"${title}" was successfully added to database.`,
+      color: 'skyblue'
     })
 
     // show notification 

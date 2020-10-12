@@ -94,7 +94,7 @@ export const SearchBooks = ({ setPage }: IProps) => {
         </Button>
       </div>
       <div className="books-container">
-        {[BooksOrLoadingSpinner]}
+        {BooksOrLoadingSpinner}
       </div>
     </div>
   );

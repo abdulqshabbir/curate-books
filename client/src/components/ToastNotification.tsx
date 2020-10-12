@@ -3,7 +3,8 @@ import './ToastNotification.css'
 
 export interface Notification {
     title: string,
-    description: string
+    description: string,
+    color: string
 }
 
 interface IProps {
@@ -14,7 +15,7 @@ interface IProps {
 
 type  TSetNotification  = React.Dispatch<React.SetStateAction<Notification | null>>
 
-export const ToastNotification = ({notification: not, position, color}: IProps) => {
+export const ToastNotification = ({notification: not, position, color = 'skyblue'}: IProps) => {
 
     const [notification, setNotification] = useState<Notification | null>(not)
     
