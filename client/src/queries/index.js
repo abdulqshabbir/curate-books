@@ -5,7 +5,11 @@ export const ALL_BOOKS = gql`
     allBooks {
       title
       author
+      id
       published
+      genres
+      description
+      image
     }
   }
 `;

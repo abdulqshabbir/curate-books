@@ -38,7 +38,11 @@ function App() {
   } else if (page === 'books') {
     return (
       <div>
-        <Books booksQuery={booksQuery} setPage={setPage} />
+        <Books 
+          booksQuery={booksQuery} 
+          setPage={setPage}
+          setShowBook={setShowBook}
+        />
       </div>
     );
   } else if (page === 'create-book') {
