@@ -1,5 +1,5 @@
-import { gql } from '@apollo/client'
 import { Book } from '../types/Book';
+import { gql } from '@apollo/client'
 
 export const ALL_BOOKS = gql`
   query {

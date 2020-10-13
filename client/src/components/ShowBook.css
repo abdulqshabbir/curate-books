@@ -1,0 +1,12 @@
+.ui.container.show-book-container {
+  padding-top: 100px;
+  width: 60vw;
+}
+
+.ui.header.show-book-title {
+  font-size: 2em;
+}
+
+.show-book-text {
+  font-size: 1.2em;
+}

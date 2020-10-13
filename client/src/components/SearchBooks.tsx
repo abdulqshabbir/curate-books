@@ -14,7 +14,8 @@ import { Button, Input, Loader } from 'semantic-ui-react'
 import './SearchBooks.css'
 
 interface IProps {
-  setPage: React.Dispatch<React.SetStateAction<PageRoute>>
+  setPage: React.Dispatch<React.SetStateAction<PageRoute>>,
+  setShowBook: React.Dispatch<React.SetStateAction<Book | null>>
 }
 
 interface GoogleBook {
@@ -31,7 +32,7 @@ interface GoogleBook {
   };
 }
 
-export const SearchBooks = ({ setPage }: IProps) => {
+export const SearchBooks = ({ setPage, setShowBook }: IProps) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [query, setQuery] = useState<string>('');
   const [googleQuery, setGoogleQuery] = useState<string>('');
@@ -58,8 +59,14 @@ export const SearchBooks = ({ setPage }: IProps) => {
   } else if (render === 'loading') {
     BooksOrLoadingSpinner = <Loader active />
   } else {
-    console.log('books', books)
-    BooksOrLoadingSpinner = books.map(b => <BookCard book={b} key={b.id} />)
+    BooksOrLoadingSpinner = 
+      books.map(b => 
+        <BookCard 
+          book={b}
+          setPage={setPage}
+          setShowBook={setShowBook}
+          key={b.id}
+        />)
   }
   return (
     <div>

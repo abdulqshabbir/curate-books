@@ -6,6 +6,7 @@ import { Authors } from "./components/Authors";
 import { Books } from "./components/Books";
 import { CreateBook } from "./components/CreateBook";
 import { SearchBooks } from "./components/SearchBooks";
+import { ShowBook } from './components/ShowBook'
 
 // semantic ui css theme
 import 'semantic-ui-css/semantic.min.css'
@@ -20,11 +21,13 @@ import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
 import { ALL_AUTHORS_DATA} from './queries/ALL_AUTHORS'
 import { ALL_BOOKS_DATA } from './queries/ALL_BOOKS'
 import { PageRoute } from './types/PageRoute'
+import { Book } from "./types/Book";
 
 function App() {
   const [page, setPage] = useState<PageRoute>('search-books');
   const authorsQuery = useQuery<ALL_AUTHORS_DATA>(ALL_AUTHORS);
   const booksQuery = useQuery<ALL_BOOKS_DATA>(ALL_BOOKS);
+  const [showBook, setShowBook] = useState<Book | null>(null);
 
   if (page === 'authors') {
     return (
@@ -47,9 +50,18 @@ function App() {
   } else if (page === 'search-books') {
     return (
       <div>
-        <SearchBooks setPage={setPage} />
+        <SearchBooks 
+          setPage={setPage}
+          setShowBook={setShowBook}
+        />
       </div>
     );
+  } else if (page === 'show-book') {
+    return(
+      <div>
+        <ShowBook book={showBook} />
+      </div>
+    )
   }
   return null;
 }

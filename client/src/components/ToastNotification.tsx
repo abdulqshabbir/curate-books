@@ -1,11 +1,6 @@
 import React, { useState } from 'react'
+import { Notification } from '../types/Notification'
 import './ToastNotification.css'
-
-export interface Notification {
-    title: string,
-    description: string,
-    color: string
-}
 
 interface IProps {
     notification: Notification,
@@ -15,14 +10,18 @@ interface IProps {
 
 type  TSetNotification  = React.Dispatch<React.SetStateAction<Notification | null>>
 
-export const ToastNotification = ({notification: not, position, color = 'skyblue'}: IProps) => {
+export const ToastNotification = (
+    {
+        notification: not, 
+        position,
+        color = 'skyblue'
+    }: IProps) => {
 
     const [notification, setNotification] = useState<Notification | null>(not)
-    
+
     const closeNotification = (setNotification: TSetNotification) =>  {
         setNotification(null)
     }
-
     if (notification === null) {
         return null
     }

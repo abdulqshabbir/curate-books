@@ -4,7 +4,8 @@ import { useMutation } from "@apollo/client";
 import { ADD_BOOK, ALL_BOOKS, ALL_AUTHORS } from "../queries/index"
 import { PageRoute } from "../types/PageRoute";
 import { ADD_BOOK_DATA, ADD_BOOK_VARS } from "../queries/ADD_BOOK";
-import { ToastNotification, Notification } from "./ToastNotification";
+import { ToastNotification } from "./ToastNotification";
+import { Notification } from '../types/Notification'
 import { NavigationBar } from './NavigationBar'
 
 interface IProps {
@@ -24,7 +25,7 @@ export const CreateBook = ({ setPage }: IProps) => {
   const [notification, setNotification] = useState<Notification>()
 
   // graphql requests
-  const [createBook, { error, loading }] = 
+  const [, { error, loading }] = 
     useMutation<ADD_BOOK_DATA, ADD_BOOK_VARS>
     (ADD_BOOK, {refetchQueries: [{ query: ALL_BOOKS }, { query: ALL_AUTHORS }],
   });
