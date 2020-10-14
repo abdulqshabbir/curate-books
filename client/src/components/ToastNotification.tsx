@@ -18,13 +18,18 @@ export const ToastNotification = (
     }: IProps) => {
 
     const [notification, setNotification] = useState<Notification | null>(not)
+    const [showNotification, setShowNotification] = useState<boolean>(true)
 
     const closeNotification = (setNotification: TSetNotification) =>  {
         setNotification(null)
+        clearTimeout(to)
     }
-    if (notification === null) {
+    if (notification === null || !showNotification) {
         return null
     }
+    let to = setTimeout(() => {
+        setShowNotification(false)
+    }, 3000)
     return (
         <div className={`notification-container ${position}`} >
             <div className={`notification toast ${position }`} style={{backgroundColor: color }} >

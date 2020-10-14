@@ -63,7 +63,7 @@ function App() {
   } else if (page === 'show-book') {
     return(
       <div>
-        <ShowBook book={showBook} />
+        <ShowBook book={showBook} setPage={setPage}/>
       </div>
     )
   }

@@ -2,14 +2,19 @@ import React from 'react'
 import { Book } from '../types/Book'
 import { Container, Divider, Header, Image, Segment } from 'semantic-ui-react'
 import './ShowBook.css'
+import { NavigationBar } from './NavigationBar'
+import { PageRoute } from '../types/PageRoute'
 
 interface IProps {
     book: Book | null,
+    setPage: React.Dispatch<React.SetStateAction<PageRoute>>,
 }
 
-export const ShowBook = ({ book }: IProps) => {
+export const ShowBook = ({ book, setPage }: IProps) => {
     if (book === null) return null
     return (
+        <div>
+            <NavigationBar setPage={setPage} />
         <Container className="show-book-container" key={book.id}>
             <Segment>
                 <Header className="show-book-title">
@@ -35,5 +40,7 @@ export const ShowBook = ({ book }: IProps) => {
                 </Image>
             </Segment>
         </Container>
+
+        </div>
     )
 }
