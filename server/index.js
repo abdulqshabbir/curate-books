@@ -33,7 +33,7 @@ const typeDefs = gql`
     bookCount: Int!
   }
 
-  union BookResult = Book | CreateBookFailed
+  union BookResult = Book | CreateBookError | BookAlreadyExists
 
   type Book {
     title: String!
@@ -46,9 +46,13 @@ const typeDefs = gql`
     id: ID!
   }
 
-  type CreateBookFailed {
+  type CreateBookError {
     message: String!
     field: String!
+  }
+
+  type BookAlreadyExists {
+    message: String!
   }
 
   type Query {
@@ -99,7 +103,8 @@ const resolvers = {
   BookResult: {
     __resolveType: (obj) => {
       if (obj.title) return "Book";
-      if (obj.message) return "CreateBookFailed";
+      if (!!obj.message && !obj.field) return "BookAlreadyExists";
+      if (!!obj.message) return "CreateBookError";
     },
   },
 };

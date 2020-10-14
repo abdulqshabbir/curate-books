@@ -30,18 +30,26 @@ export const ADD_BOOK = gql`
         googleBookId
         id
       }
-      ... on CreateBookFailed {
+      ... on CreateBookError {
         message
         field
+      }
+      ...on BookAlreadyExists {
+        message
       }
     }
   }
 `;
 
 interface ADD_BOOK_FAILURE {
-  __typename: 'CreateBookFailed',
+  __typename: 'CreateBookError',
   message: string,
   field: string
+}
+
+interface BOOK_ALREADY_EXISTS {
+  __typename: 'BookAlreadyExists',
+  message: string
 }
 
 interface ADD_BOOK_SUCCESS {
@@ -56,7 +64,10 @@ interface ADD_BOOK_SUCCESS {
   id: string,
 }
 
-export type ADD_BOOK_DATA = ADD_BOOK_SUCCESS | ADD_BOOK_FAILURE
+export type ADD_BOOK_DATA =
+  ADD_BOOK_SUCCESS |
+  ADD_BOOK_FAILURE |
+  BOOK_ALREADY_EXISTS
 
 export interface ADD_BOOK_VARS {
   title: string,

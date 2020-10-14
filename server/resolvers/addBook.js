@@ -4,6 +4,12 @@ const Book = require("../models/Book");
 exports.addBook = async (_, args) => {
   if (isInvalidInput(args)) {
     return provideErrorMessage(args);
+  }
+  const bookExists = await bookAlreadyExists(args);
+  if (bookExists) {
+    return {
+      message: `The Book, ${args.title}, already exists in your collection!`,
+    };
   } else {
     const newBook = new Book({ ...args });
     try {
@@ -14,6 +20,15 @@ exports.addBook = async (_, args) => {
     return newBook;
   }
 };
+
+async function bookAlreadyExists(args) {
+  const googleBookId = args.googleBookId;
+  const bookExists = await Book.exists({ googleBookId });
+
+  if (bookExists) return true;
+
+  return false;
+}
 
 function isInvalidInput(args) {
   if (

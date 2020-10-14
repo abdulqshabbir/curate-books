@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Card, Image, Button } from 'semantic-ui-react'
 import { Book } from '../types/Book'
 import { useMutation } from '@apollo/client'
@@ -19,15 +19,39 @@ export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
 
     const [ notification, setNotification] = useState<Notification | null>(null)
 
-    const [addBookToDatabase] = 
+    const [addBookToDatabase, { data }] = 
         useMutation<ADD_BOOK_DATA, ADD_BOOK_VARS>(ADD_BOOK, {
             refetchQueries: [{query: ALL_BOOKS}]
         })
 
+    useEffect(() => {
+        if (!data) return
+
+        if (data.__typename === 'Book') {
+            setNotification({
+                title: 'Yaay!!',
+                description: `"${book.title}" was successfully added to database.`,
+                color: 'skyblue'
+            })
+        } else if (data.__typename === 'BookAlreadyExists') {
+            setNotification({
+                title: 'Sorry...',
+                description: data.message,
+                color: '#ff4b5c'
+            }) 
+        } else if (data.__typename === 'CreateBookError') {
+            setNotification({
+                title: 'Sorry...',
+                description: 'Something went wrong',
+                color: '#ff4b5c'
+            })  
+        } 
+
+    }, [data, book.title])
+
     async function handleClick(
             e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-            book: Book,
-            setNotification:React.Dispatch<React.SetStateAction<Notification | null>>
+            book: Book
         ) {
         e.stopPropagation()
         await addBookToDatabase({
@@ -40,11 +64,6 @@ export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
                 image: book.image,
                 googleBookId: book.id
             }
-        })
-        setNotification({
-            title: 'Success',
-            description: `"${book.title}" was successfully added to database.`,
-            color: 'skyblue'
         })
     }
 
@@ -70,9 +89,16 @@ export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
                         {`Written by ${book.author}`}
                     </Card.Content>
                 </Card.Content>
-                <Button onClick={(e) => handleClick(e, book, setNotification)}>+</Button>
+                <Button onClick={(e) => handleClick(e, book)}>+</Button>
             </Card>
-            {notification && <ToastNotification notification={notification} position='top-right' color="#686d76"/>}
+            {
+                notification && 
+                <ToastNotification
+                    notification={notification}
+                    position='top-right'
+                    color="#686d76"
+                />
+            }
         </div>
     )
 }
