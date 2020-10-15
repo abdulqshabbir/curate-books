@@ -64,10 +64,12 @@ interface ADD_BOOK_SUCCESS {
   id: string,
 }
 
-export type ADD_BOOK_DATA =
+export interface ADD_BOOK_DATA {
+  addBook:
   ADD_BOOK_SUCCESS |
   ADD_BOOK_FAILURE |
   BOOK_ALREADY_EXISTS
+}
 
 export interface ADD_BOOK_VARS {
   title: string,

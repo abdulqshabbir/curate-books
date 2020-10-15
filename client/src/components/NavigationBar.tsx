@@ -29,14 +29,6 @@ export const NavigationBar = ({setPage}: IProps) => {
                     }}
                 />
                 <Menu.Item
-                    name={'create-book'}
-                    active={activeMenuItem === 'create-book'}
-                    onClick={() => {
-                        setPage('create-book')
-                        setActiveMenuItem('create-book')
-                    }}
-                />
-                <Menu.Item
                     name={'search-books'}
                     active={activeMenuItem === 'search-books'}
                     onClick={() => {

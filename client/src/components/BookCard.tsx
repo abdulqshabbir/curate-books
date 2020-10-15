@@ -25,21 +25,22 @@ export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
         })
 
     useEffect(() => {
+        console.log('data value: ', data)
         if (!data) return
 
-        if (data.__typename === 'Book') {
+        if (data.addBook.__typename === 'Book') {
             setNotification({
                 title: 'Yaay!!',
                 description: `"${book.title}" was successfully added to database.`,
                 color: 'skyblue'
             })
-        } else if (data.__typename === 'BookAlreadyExists') {
+        } else if (data.addBook.__typename === 'BookAlreadyExists') {
             setNotification({
                 title: 'Sorry...',
-                description: data.message,
+                description: data.addBook.message,
                 color: '#ff4b5c'
             }) 
-        } else if (data.__typename === 'CreateBookError') {
+        } else {
             setNotification({
                 title: 'Sorry...',
                 description: 'Something went wrong',

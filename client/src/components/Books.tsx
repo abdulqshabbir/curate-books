@@ -1,9 +1,12 @@
-import { QueryResult } from "@apollo/client";
 import React from "react";
+import { QueryResult } from "@apollo/client";
+// query
 import { ALL_BOOKS_DATA } from "../queries/ALL_BOOKS";
-import { PageRoute } from "../types/PageRoute";
+// components
 import { NavigationBar } from "./NavigationBar";
 import { BookCard } from './BookCard'
+// types
+import { PageRoute } from "../types/PageRoute";
 import { Book } from "../types/Book";
 
 interface IProps {
@@ -26,7 +29,8 @@ export const Books = ({ booksQuery, setPage, setShowBook }: IProps) => {
         <NavigationBar setPage={setPage} />
         <div className="books-container">
           {
-            data.allBooks.map(b => 
+            data.allBooks.map(
+              b => 
               <BookCard
                 key={b.id}
                 book={b}
@@ -40,4 +44,3 @@ export const Books = ({ booksQuery, setPage, setShowBook }: IProps) => {
     );
   }
 };
-

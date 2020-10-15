@@ -4,7 +4,6 @@ import React, { useState } from "react";
 //components
 import { Authors } from "./components/Authors";
 import { Books } from "./components/Books";
-import { CreateBook } from "./components/CreateBook";
 import { SearchBooks } from "./components/SearchBooks";
 import { ShowBook } from './components/ShowBook'
 
@@ -43,12 +42,6 @@ function App() {
           setPage={setPage}
           setShowBook={setShowBook}
         />
-      </div>
-    );
-  } else if (page === 'create-book') {
-    return (
-      <div>
-        <CreateBook setPage={setPage} />
       </div>
     );
   } else if (page === 'search-books') {
