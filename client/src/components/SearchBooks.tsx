@@ -15,7 +15,8 @@ import './SearchBooks.css'
 
 interface IProps {
   setPage: React.Dispatch<React.SetStateAction<PageRoute>>,
-  setShowBook: React.Dispatch<React.SetStateAction<Book | null>>
+  setShowBook: React.Dispatch<React.SetStateAction<Book | null>>,
+  page: PageRoute
 }
 
 interface GoogleBook {
@@ -32,7 +33,7 @@ interface GoogleBook {
   };
 }
 
-export const SearchBooks = ({ setPage, setShowBook }: IProps) => {
+export const SearchBooks = ({ setPage, setShowBook, page }: IProps) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [query, setQuery] = useState<string>('');
   const [googleQuery, setGoogleQuery] = useState<string>('');
@@ -49,7 +50,7 @@ export const SearchBooks = ({ setPage, setShowBook }: IProps) => {
       .then(res => res.json())
       .then(res => filterGoogleBooksByRequiredFields(res))
       .then(filteredBooks => formatGoogleBooks(filteredBooks))
-      .then(filteredBooks=> setBooks(filteredBooks))
+      .then(formattedBooks => setBooks(formattedBooks))
       .then(() => setRender('books'))
       .catch((e) => setBooks([]))
   }, [googleQuery])
@@ -66,6 +67,7 @@ export const SearchBooks = ({ setPage, setShowBook }: IProps) => {
           setPage={setPage}
           setShowBook={setShowBook}
           key={b.id}
+          page={page}
         />)
   }
   return (

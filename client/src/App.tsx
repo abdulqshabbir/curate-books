@@ -41,6 +41,7 @@ function App() {
           booksQuery={booksQuery} 
           setPage={setPage}
           setShowBook={setShowBook}
+          page={page}
         />
       </div>
     );
@@ -50,6 +51,7 @@ function App() {
         <SearchBooks 
           setPage={setPage}
           setShowBook={setShowBook}
+          page={page}
         />
       </div>
     );

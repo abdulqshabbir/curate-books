@@ -12,10 +12,11 @@ import { Book } from "../types/Book";
 interface IProps {
   booksQuery: QueryResult<ALL_BOOKS_DATA, Record<string, any>>,
   setPage: React.Dispatch<React.SetStateAction<PageRoute>>,
-  setShowBook: React.Dispatch<React.SetStateAction<Book | null>>
+  setShowBook: React.Dispatch<React.SetStateAction<Book | null>>,
+  page: PageRoute
 }
 
-export const Books = ({ booksQuery, setPage, setShowBook }: IProps) => {
+export const Books = ({ booksQuery, setPage, setShowBook, page }: IProps) => {
   const {loading, error, data} = booksQuery
   if (loading) {
     return <div>Loading...</div>;
@@ -36,6 +37,7 @@ export const Books = ({ booksQuery, setPage, setShowBook }: IProps) => {
                 book={b}
                 setPage={setPage}
                 setShowBook={setShowBook}
+                page={page}
               />
             )
           }

@@ -12,11 +12,18 @@ import { ALL_BOOKS } from '../queries'
 interface IProps {
     book: Book,
     setPage: React.Dispatch<React.SetStateAction<PageRoute>>,
-    setShowBook: React.Dispatch<React.SetStateAction<Book | null>>
+    setShowBook: React.Dispatch<React.SetStateAction<Book | null>>,
+    page: PageRoute
 }
 
-export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
+export const BookCard = ({ 
+    book, 
+    setPage, 
+    setShowBook, 
+    page
+}: IProps
 
+) => {
     const [ notification, setNotification] = useState<Notification | null>(null)
 
     const [addBookToDatabase, { data }] = 
@@ -25,30 +32,8 @@ export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
         })
 
     useEffect(() => {
-        console.log('data value: ', data)
-        if (!data) return
-
-        if (data.addBook.__typename === 'Book') {
-            setNotification({
-                title: 'Yaay!!',
-                description: `"${book.title}" was successfully added to database.`,
-                color: 'skyblue'
-            })
-        } else if (data.addBook.__typename === 'BookAlreadyExists') {
-            setNotification({
-                title: 'Sorry...',
-                description: data.addBook.message,
-                color: '#ff4b5c'
-            }) 
-        } else {
-            setNotification({
-                title: 'Sorry...',
-                description: 'Something went wrong',
-                color: '#ff4b5c'
-            })  
-        } 
-
-    }, [data, book.title])
+        displayToastNofification(data, book, setNotification)
+    }, [data, book])
 
     async function handleClick(
             e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -90,10 +75,15 @@ export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
                         {`Written by ${book.author}`}
                     </Card.Content>
                 </Card.Content>
-                <Button onClick={(e) => handleClick(e, book)}>+</Button>
+                {
+                    page === 'books' ? 
+                        null : 
+                        <Button onClick={(e) => handleClick(e, book)}>+</Button>
+                }
             </Card>
             {
-                notification && 
+                notification
+                && 
                 <ToastNotification
                     notification={notification}
                     position='top-right'
@@ -102,4 +92,31 @@ export const BookCard = ({ book, setPage, setShowBook}: IProps) => {
             }
         </div>
     )
+}
+
+function displayToastNofification(
+    data: ADD_BOOK_DATA | null | undefined, 
+    book: Book,
+    setNotification: React.Dispatch<React.SetStateAction<Notification | null>>
+) {
+    if (!data) return
+    if (data.addBook.__typename === 'Book') {
+        setNotification({
+            title: 'Yaay!!',
+            description: `"${book.title}" was successfully added to database.`,
+            color: 'skyblue'
+        })
+    } else if (data.addBook.__typename === 'BookAlreadyExists') {
+        setNotification({
+            title: 'Sorry...',
+            description: data.addBook.message,
+            color: '#ff4b5c'
+        }) 
+    } else {
+        setNotification({
+            title: 'Sorry...',
+            description: 'Something went wrong',
+            color: '#ff4b5c'
+        })  
+    } 
 }
