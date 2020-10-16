@@ -9,6 +9,7 @@ const { addBook } = require("./resolvers/addBook");
 const { addAuthor } = require("./resolvers/addAuthor");
 const { editWhenAuthorIsBorn } = require("./resolvers/editAuthor");
 const { bookCount } = require("./resolvers/bookCount");
+const { deleteBook } = require("./resolvers/deleteBook");
 
 // database models
 const Book = require("./models/Book");
@@ -34,6 +35,12 @@ const typeDefs = gql`
   }
 
   union BookResult = Book | CreateBookError | BookAlreadyExists
+
+  union DeleteBookResult = Book | BookDoesNotExist
+
+  type BookDoesNotExist {
+    message: String!
+  }
 
   type Book {
     title: String!
@@ -71,6 +78,9 @@ const typeDefs = gql`
       image: String
       googleBookId: String
     ): BookResult!
+
+    deleteBook(googleBookId: String!): DeleteBookResult!
+
     addAuthor(name: String!, born: Int): Author
     editWhenAuthorIsBorn(name: String!, born: Int!): Author
   }
@@ -94,6 +104,7 @@ const resolvers = {
   },
   Mutation: {
     addBook: addBook,
+    deleteBook: deleteBook,
     addAuthor: addAuthor,
     editWhenAuthorIsBorn: editWhenAuthorIsBorn,
   },
@@ -105,6 +116,12 @@ const resolvers = {
       if (obj.title) return "Book";
       if (!!obj.message && !obj.field) return "BookAlreadyExists";
       if (!!obj.message) return "CreateBookError";
+    },
+  },
+  DeleteBookResult: {
+    __resolveType: (obj) => {
+      if (obj.title) return "Book";
+      if (obj.message) return "BookDoesNotExist";
     },
   },
 };
