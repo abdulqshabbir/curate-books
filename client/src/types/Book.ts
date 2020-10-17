@@ -5,5 +5,5 @@ export interface Book {
     genres: [string],
     description: string,
     image: string,
-    id: string,
+    googleBookId: string
 }

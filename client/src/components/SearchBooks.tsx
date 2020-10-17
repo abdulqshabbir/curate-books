@@ -66,7 +66,7 @@ export const SearchBooks = ({ setPage, setShowBook, page }: IProps) => {
           book={b}
           setPage={setPage}
           setShowBook={setShowBook}
-          key={b.id}
+          key={b.googleBookId}
           page={page}
         />)
   }
@@ -123,7 +123,7 @@ function formatGoogleBooks(filteredBooks: GoogleBook[]): Book[] {
     genres: book.volumeInfo.categories,
     description:book.volumeInfo.description,
     image: book.volumeInfo.imageLinks.thumbnail,
-    id: book.id,
+    googleBookId: book.id,
   })); 
   return formattedBooks
 }

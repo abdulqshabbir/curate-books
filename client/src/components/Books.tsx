@@ -33,7 +33,7 @@ export const Books = ({ booksQuery, setPage, setShowBook, page }: IProps) => {
             data.allBooks.map(
               b => 
               <BookCard
-                key={b.id}
+                key={b.googleBookId}
                 book={b}
                 setPage={setPage}
                 setShowBook={setShowBook}

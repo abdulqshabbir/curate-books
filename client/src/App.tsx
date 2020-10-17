@@ -14,11 +14,11 @@ import 'semantic-ui-css/semantic.min.css'
 import "./App.css";
 
 //queries
-import { ALL_AUTHORS, ALL_BOOKS } from "./queries";
+import { ALL_AUTHORS } from "./queries";
 
 //types
 import { ALL_AUTHORS_DATA} from './queries/ALL_AUTHORS'
-import { ALL_BOOKS_DATA } from './queries/ALL_BOOKS'
+import { ALL_BOOKS_DATA, ALL_BOOKS } from './queries/ALL_BOOKS'
 import { PageRoute } from './types/PageRoute'
 import { Book } from "./types/Book";
 

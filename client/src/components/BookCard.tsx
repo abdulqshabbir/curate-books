@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Card, Image, Button } from 'semantic-ui-react'
+import { Card, Image, Button, Icon } from 'semantic-ui-react'
 import { Book } from '../types/Book'
 import { useMutation } from '@apollo/client'
 import { ADD_BOOK_DATA, ADD_BOOK_VARS, ADD_BOOK } from '../queries/ADD_BOOK'
@@ -8,6 +8,7 @@ import { Notification } from '../types/Notification'
 import { ToastNotification } from './ToastNotification'
 import './BookCard.css'
 import { ALL_BOOKS } from '../queries'
+import { DELETE_BOOK, DELETE_BOOK_DATA, DELETE_BOOK_VARS } from '../queries/DELETE_BOOK'
 
 interface IProps {
     book: Book,
@@ -27,18 +28,20 @@ export const BookCard = ({
     const [ notification, setNotification] = useState<Notification | null>(null)
 
     const [addBookToDatabase, { data }] = 
-        useMutation<ADD_BOOK_DATA, ADD_BOOK_VARS>(ADD_BOOK, {
-            refetchQueries: [{query: ALL_BOOKS}]
-        })
+        useMutation
+            <ADD_BOOK_DATA, ADD_BOOK_VARS>
+            (ADD_BOOK, {refetchQueries: [{query: ALL_BOOKS}]})
+
+    const [deleteBookFromDatabase] = 
+        useMutation
+            <DELETE_BOOK_DATA, DELETE_BOOK_VARS>
+            (DELETE_BOOK, {refetchQueries: [{query: ALL_BOOKS}]})
 
     useEffect(() => {
         displayToastNofification(data, book, setNotification)
     }, [data, book])
 
-    async function handleClick(
-            e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-            book: Book
-        ) {
+    async function handleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>, book: Book){
         e.stopPropagation()
         await addBookToDatabase({
             variables: {
@@ -48,7 +51,7 @@ export const BookCard = ({
                 genres: book.genres,
                 description: book.description,
                 image: book.image,
-                googleBookId: book.id
+                googleBookId: book.googleBookId
             }
         })
     }
@@ -79,6 +82,22 @@ export const BookCard = ({
                     page === 'books' ? 
                         null : 
                         <Button onClick={(e) => handleClick(e, book)}>+</Button>
+                }
+                {
+                    page === 'books' ? 
+                        <Button onClick={async e =>  {
+                            e.stopPropagation()
+                            console.log('book', book)
+                            try {
+                                await deleteBookFromDatabase({variables: {googleBookId: book.googleBookId}})
+                            } catch(e) {
+                                console.log(e)
+                            }
+                        }}>
+                            <Icon name="trash">
+                            </Icon>
+                        </Button> 
+                        : null
                 }
             </Card>
             {

@@ -15,7 +15,7 @@ export const ShowBook = ({ book, setPage }: IProps) => {
     return (
         <div>
             <NavigationBar setPage={setPage} />
-        <Container className="show-book-container" key={book.id}>
+        <Container className="show-book-container" key={book.googleBookId}>
             <Segment>
                 <Header className="show-book-title">
                     {book.title}
